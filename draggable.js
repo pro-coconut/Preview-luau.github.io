@@ -1,14 +1,14 @@
-function makeDraggable(el) {
-  let x=0,y=0,drag=false;
-  el.onmousedown=e=>{
+function makeDraggable(el){
+  let dx=0,dy=0,drag=false;
+  el.addEventListener("mousedown",e=>{
     drag=true;
-    x=e.clientX-el.offsetLeft;
-    y=e.clientY-el.offsetTop;
-  };
-  document.onmouseup=()=>drag=false;
-  document.onmousemove=e=>{
+    dx=e.clientX-el.offsetLeft;
+    dy=e.clientY-el.offsetTop;
+  });
+  document.addEventListener("mouseup",()=>drag=false);
+  document.addEventListener("mousemove",e=>{
     if(!drag) return;
-    el.style.left=(e.clientX-x)+"px";
-    el.style.top=(e.clientY-y)+"px";
-  };
+    el.style.left=(e.clientX-dx)+"px";
+    el.style.top=(e.clientY-dy)+"px";
+  });
 }
