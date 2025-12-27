@@ -1,28 +1,23 @@
 const editor = CodeMirror(document.getElementById("editor"), {
-  value:
-`print("Executor ready")
-
--- loadstring example:
--- loadstring("https://raw.githubusercontent.com/user/repo/main/test.lua")()`,
-  mode: "lua",
-  lineNumbers: true
+  value: `print("Hello executor")`,
+  mode:"lua",
+  lineNumbers:true
 });
-window.editor = editor;
 
-function clearConsole(){
-  document.getElementById("console").textContent="";
-}
-function clearUI(){
-  document.getElementById("ui").innerHTML="";
+const consoleEl = document.getElementById("console");
+const ui = document.getElementById("ui");
+
+function clearAll(){
+  consoleEl.textContent="";
+  ui.innerHTML="";
 }
 
-/* SAFE REALTIME */
-let timer=null;
-editor.on("change",()=>{
+/* Realtime auto run */
+let timer = null;
+editor.on("change", ()=>{
   clearTimeout(timer);
-  timer=setTimeout(()=>{
-    clearConsole();
-    clearUI();
+  timer = setTimeout(()=>{
+    clearAll();
     runLuau(editor.getValue());
-  },400); // safe delay chống lag
+  },300);
 });
