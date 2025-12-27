@@ -18,9 +18,9 @@ function clearAll(){
   ui.innerHTML="";
 }
 
-/* Realtime safe */
+/* Realtime auto-run safe */
 let timer=null;
-editor.on("change",()=>{
+editor.on("change", ()=>{
   clearTimeout(timer);
   timer=setTimeout(()=>{
     clearAll();
