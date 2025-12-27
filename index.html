@@ -1,57 +1,162 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Luau Web Executor</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luau Executor</title>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
 
 <style>
-:root{--bg:#0b0d12;--p:#141823;--p2:#1b2030;--a:#5da9ff;--d:#ff5d5d;--t:#e9ebf1;--m:#9aa0b3}
+:root{
+  --bg:#0b0d12;
+  --panel:#141823;
+  --panel2:#1b2030;
+  --accent:#5da9ff;
+  --danger:#ff5d5d;
+  --text:#e9ebf1;
+  --muted:#9aa0b3;
+}
 *{box-sizing:border-box}
-body{margin:0;height:100vh;background:var(--bg);color:var(--t);font-family:system-ui,monospace;overflow:hidden}
-#header{height:44px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;background:#111726;font-weight:600}
-#toolbar{display:flex;gap:8px;padding:8px;background:var(--p);border-bottom:1px solid #000}
-.toggle{padding:6px 10px;font-size:13px;background:var(--p2);border:1px solid #000;border-radius:6px;color:var(--m)}
-.toggle.on{color:var(--t);border-color:var(--a)}
-.toggle.danger{border-color:var(--d);color:var(--d)}
-#tabs{display:flex;background:var(--p)}
-#tabs button{flex:1;padding:12px;background:none;border:none;color:var(--m)}
-#tabs button.active{color:var(--t);border-bottom:2px solid var(--a)}
-#container{display:flex;height:calc(100vh - 44px - 44px - 40px)}
-#editor{width:420px;background:var(--p)}
-#right{flex:1;display:flex;flex-direction:column}
-#ui{flex:1;background:var(--p2);position:relative}
-#console{height:160px;background:#000;font-size:13px;padding:8px;overflow:auto;white-space:pre-wrap}
+
+body{
+  margin:0;
+  height:100vh;
+  background:linear-gradient(160deg,#0b0d12,#0e1220);
+  color:var(--text);
+  font-family:system-ui,monospace;
+  overflow:hidden;
+}
+
+/* HEADER */
+#header{
+  height:46px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(90deg,#111726,#1c2238);
+  box-shadow:0 2px 6px #0008;
+}
+#header span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* TOOLBAR */
+#toolbar{
+  display:flex;
+  gap:10px;
+  padding:10px;
+  background:rgba(20,24,35,.9);
+  backdrop-filter:blur(6px);
+}
+.toggle{
+  padding:7px 14px;
+  font-size:13px;
+  border-radius:8px;
+  background:#1b2030;
+  border:1px solid #000;
+  color:var(--muted);
+}
+.toggle.on{
+  color:var(--text);
+  border-color:var(--accent);
+  box-shadow:0 0 0 1px #5da9ff55;
+}
+.toggle.danger{
+  color:var(--danger);
+  border-color:var(--danger);
+}
+
+/* TABS */
+#tabs{
+  display:flex;
+  background:var(--panel);
+}
+#tabs button{
+  flex:1;
+  padding:12px;
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-weight:500;
+}
+#tabs button.active{
+  color:var(--text);
+  border-bottom:2px solid var(--accent);
+}
+
+/* LAYOUT */
+#container{
+  display:flex;
+  height:calc(100vh - 46px - 50px - 44px);
+}
+#editor{
+  width:420px;
+  background:var(--panel);
+  box-shadow:inset -1px 0 0 #000;
+}
+#right{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+#ui{
+  flex:1;
+  background:radial-gradient(circle at top,#202544,#151a2b);
+}
+#console{
+  height:160px;
+  background:#000;
+  font-size:13px;
+  padding:10px;
+  overflow:auto;
+  white-space:pre-wrap;
+}
+
+/* MOBILE */
 @media(max-width:768px){
   #container{flex-direction:column}
   #editor,#ui,#console{display:none;height:100%}
   .tab-active{display:block}
   #editor{width:100%}
 }
-.CodeMirror{height:100%;background:transparent;color:var(--t)}
+
+/* CODEMIRROR */
+.CodeMirror{
+  height:100%;
+  background:transparent;
+  color:var(--text);
+  font-size:13px;
+}
 </style>
 </head>
 
 <body>
+
+<!-- HEADER -->
 <div id="header">
-  <div>Luau Web Executor</div>
-  <div style="font-size:12px;color:var(--m)">Realtime • Safe</div>
+  <div>Luau Executor</div>
+  <span>Realtime • Safe • Web</span>
 </div>
 
+<!-- TOOLBAR -->
 <div id="toolbar">
   <button id="rt" class="toggle on">Realtime</button>
-  <button id="safe" class="toggle on">Safe mode</button>
+  <button id="safe" class="toggle on">Safe</button>
   <button id="clearBtn" class="toggle danger">Clear</button>
 </div>
 
+<!-- TABS -->
 <div id="tabs">
   <button class="active" data-tab="editor">Editor</button>
   <button data-tab="ui">UI</button>
   <button data-tab="console">Console</button>
 </div>
 
+<!-- CONTENT -->
 <div id="container">
   <div id="editor" class="tab-active"></div>
   <div id="right">
@@ -60,37 +165,58 @@ body{margin:0;height:100vh;background:var(--bg);color:var(--t);font-family:syste
   </div>
 </div>
 
+<!-- LIBS -->
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/luau-web/dist/luau.web.js"></script>
 
+<!-- EXECUTOR -->
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
 
 <script>
-/* tabs */
-document.querySelectorAll("#tabs button").forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll("#tabs button").forEach(x=>x.classList.remove("active"));
-    b.classList.add("active");
-    ["editor","ui","console"].forEach(id=>document.getElementById(id).classList.remove("tab-active"));
-    document.getElementById(b.dataset.tab).classList.add("tab-active");
+/* Tabs */
+document.querySelectorAll("#tabs button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll("#tabs button")
+      .forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    ["editor","ui","console"]
+      .forEach(id=>document.getElementById(id)
+      .classList.remove("tab-active"));
+    document.getElementById(btn.dataset.tab)
+      .classList.add("tab-active");
   };
 });
-/* toggles */
+
+/* Toggles */
 rt.onclick=()=>rt.classList.toggle("on");
 safe.onclick=()=>safe.classList.toggle("on");
-/* editor */
-const editor=CodeMirror(editorEl=document.getElementById("editor"),{
-  value:localStorage.getItem("luau_script")||`print("Luau Web Executor Ready")`,
-  mode:"lua",lineNumbers:true,indentUnit:2,tabSize:2
+
+/* Console */
+window.log=(m)=>{
+  consoleEl.textContent+=m+"\n";
+  consoleEl.scrollTop=consoleEl.scrollHeight;
+};
+clearBtn.onclick=()=>consoleEl.textContent="";
+const consoleEl=document.getElementById("console");
+
+/* Editor */
+const editor=CodeMirror(document.getElementById("editor"),{
+  value:localStorage.getItem("luau_script")||
+`print("Luau Web Executor Ready")`,
+  mode:"lua",
+  lineNumbers:true,
+  indentUnit:2,
+  tabSize:2
 });
 window.editor=editor;
-/* console */
-window.log=(m)=>{const c=consoleEl=document.getElementById("console");c.textContent+=m+"\n";c.scrollTop=c.scrollHeight;}
-clearBtn.onclick=()=>consoleEl.textContent="";
-/* autosave */
-addEventListener("beforeunload",()=>localStorage.setItem("luau_script",editor.getValue()));
+
+/* Save */
+addEventListener("beforeunload",()=>{
+  localStorage.setItem("luau_script",editor.getValue());
+});
 </script>
+
 </body>
 </html>
