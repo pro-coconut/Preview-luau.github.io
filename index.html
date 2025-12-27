@@ -2,219 +2,80 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luau Executor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luau Web Executor</title>
 
 <link rel="stylesheet"
  href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
 
 <style>
-:root{
-  --bg:#0b0d12;
-  --panel:#141823;
-  --panel2:#1b2030;
-  --accent:#5da9ff;
-  --danger:#ff5d5d;
-  --text:#e9ebf1;
-  --muted:#9aa0b3;
-}
-*{box-sizing:border-box}
-
 body{
-  margin:0;
-  height:100vh;
-  background:linear-gradient(160deg,#0b0d12,#0e1220);
-  color:var(--text);
-  font-family:system-ui,monospace;
-  overflow:hidden;
+  margin:0;height:100vh;
+  background:#0b0e14;color:#e9ebf1;
+  font-family:monospace;overflow:hidden
 }
-
-/* HEADER */
-#header{
-  height:46px;
-  padding:0 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:linear-gradient(90deg,#111726,#1c2238);
-  box-shadow:0 2px 6px #0008;
+#top{
+  height:46px;background:#111726;
+  display:flex;align-items:center;
+  padding:0 12px;font-weight:bold
 }
-#header span{
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* TOOLBAR */
-#toolbar{
-  display:flex;
-  gap:10px;
-  padding:10px;
-  background:rgba(20,24,35,.9);
-  backdrop-filter:blur(6px);
-}
-.toggle{
-  padding:7px 14px;
-  font-size:13px;
-  border-radius:8px;
-  background:#1b2030;
-  border:1px solid #000;
-  color:var(--muted);
-}
-.toggle.on{
-  color:var(--text);
-  border-color:var(--accent);
-  box-shadow:0 0 0 1px #5da9ff55;
-}
-.toggle.danger{
-  color:var(--danger);
-  border-color:var(--danger);
-}
-
-/* TABS */
-#tabs{
-  display:flex;
-  background:var(--panel);
-}
+#tabs{display:flex;background:#141823}
 #tabs button{
-  flex:1;
-  padding:12px;
-  background:none;
-  border:none;
-  color:var(--muted);
-  font-weight:500;
+  flex:1;padding:10px;
+  background:none;border:none;
+  color:#9aa0b3;font-size:14px
 }
 #tabs button.active{
-  color:var(--text);
-  border-bottom:2px solid var(--accent);
+  color:#fff;border-bottom:2px solid #5da9ff
 }
-
-/* LAYOUT */
-#container{
-  display:flex;
-  height:calc(100vh - 46px - 50px - 44px);
+#editor,#ui,#console{
+  display:none;height:calc(100vh - 92px)
 }
-#editor{
-  width:420px;
-  background:var(--panel);
-  box-shadow:inset -1px 0 0 #000;
-}
-#right{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-}
-#ui{
-  flex:1;
-  background:radial-gradient(circle at top,#202544,#151a2b);
-}
+#editor{display:block}
 #console{
-  height:160px;
-  background:#000;
-  font-size:13px;
-  padding:10px;
-  overflow:auto;
-  white-space:pre-wrap;
+  background:#000;padding:8px;
+  white-space:pre-wrap;overflow:auto
 }
-
-/* MOBILE */
-@media(max-width:768px){
-  #container{flex-direction:column}
-  #editor,#ui,#console{display:none;height:100%}
-  .tab-active{display:block}
-  #editor{width:100%}
-}
-
-/* CODEMIRROR */
-.CodeMirror{
-  height:100%;
-  background:transparent;
-  color:var(--text);
-  font-size:13px;
+#ui{padding:8px}
+button{
+  background:#1e2433;color:#fff;
+  border:none;border-radius:4px;
+  padding:8px 12px;margin:6px
 }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div id="header">
-  <div>Luau Executor</div>
-  <span>Realtime • Safe • Web</span>
-</div>
+<div id="top">Luau Web Executor • Realtime Safe</div>
 
-<!-- TOOLBAR -->
-<div id="toolbar">
-  <button id="rt" class="toggle on">Realtime</button>
-  <button id="safe" class="toggle on">Safe</button>
-  <button id="clearBtn" class="toggle danger">Clear</button>
-</div>
-
-<!-- TABS -->
 <div id="tabs">
   <button class="active" data-tab="editor">Editor</button>
   <button data-tab="ui">UI</button>
   <button data-tab="console">Console</button>
 </div>
 
-<!-- CONTENT -->
-<div id="container">
-  <div id="editor" class="tab-active"></div>
-  <div id="right">
-    <div id="ui"></div>
-    <div id="console"></div>
-  </div>
-</div>
+<div id="editor"></div>
+<div id="ui"></div>
+<div id="console"></div>
 
-<!-- LIBS -->
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/luau-web/dist/luau.web.js"></script>
 
-<!-- EXECUTOR -->
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
 
 <script>
-/* Tabs */
 document.querySelectorAll("#tabs button").forEach(btn=>{
   btn.onclick=()=>{
     document.querySelectorAll("#tabs button")
       .forEach(b=>b.classList.remove("active"));
     btn.classList.add("active");
     ["editor","ui","console"]
-      .forEach(id=>document.getElementById(id)
-      .classList.remove("tab-active"));
-    document.getElementById(btn.dataset.tab)
-      .classList.add("tab-active");
+      .forEach(id=>document.getElementById(id).style.display="none");
+    document.getElementById(btn.dataset.tab).style.display="block";
   };
-});
-
-/* Toggles */
-rt.onclick=()=>rt.classList.toggle("on");
-safe.onclick=()=>safe.classList.toggle("on");
-
-/* Console */
-window.log=(m)=>{
-  consoleEl.textContent+=m+"\n";
-  consoleEl.scrollTop=consoleEl.scrollHeight;
-};
-clearBtn.onclick=()=>consoleEl.textContent="";
-const consoleEl=document.getElementById("console");
-
-/* Editor */
-const editor=CodeMirror(document.getElementById("editor"),{
-  value:localStorage.getItem("luau_script")||
-`print("Luau Web Executor Ready")`,
-  mode:"lua",
-  lineNumbers:true,
-  indentUnit:2,
-  tabSize:2
-});
-window.editor=editor;
-
-/* Save */
-addEventListener("beforeunload",()=>{
-  localStorage.setItem("luau_script",editor.getValue());
 });
 </script>
 
