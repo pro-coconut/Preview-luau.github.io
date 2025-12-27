@@ -1,14 +1,26 @@
 function makeDraggable(el){
-  let dx=0,dy=0,drag=false;
-  el.addEventListener("mousedown",e=>{
+  let ox=0,oy=0,drag=false;
+
+  const start=e=>{
     drag=true;
-    dx=e.clientX-el.offsetLeft;
-    dy=e.clientY-el.offsetTop;
-  });
-  document.addEventListener("mouseup",()=>drag=false);
-  document.addEventListener("mousemove",e=>{
+    const t=e.touches?e.touches[0]:e;
+    ox=t.clientX-el.offsetLeft;
+    oy=t.clientY-el.offsetTop;
+  };
+
+  const move=e=>{
     if(!drag) return;
-    el.style.left=(e.clientX-dx)+"px";
-    el.style.top=(e.clientY-dy)+"px";
-  });
+    const t=e.touches?e.touches[0]:e;
+    el.style.left=(t.clientX-ox)+"px";
+    el.style.top=(t.clientY-oy)+"px";
+  };
+
+  const end=()=>drag=false;
+
+  el.addEventListener("mousedown",start);
+  el.addEventListener("touchstart",start);
+  document.addEventListener("mousemove",move);
+  document.addEventListener("touchmove",move);
+  document.addEventListener("mouseup",end);
+  document.addEventListener("touchend",end);
 }
