@@ -1,31 +1,45 @@
-// roblox-mock.js
-window.game={CoreGui:document.getElementById("ui")};
+async function runLuau(code){
+  try{
+    const L = luau.createState();
 
-window.Instance={
-  new:(type)=>{
-    const el=document.createElement(type==="TextButton"?"button":"div");
-    el._events={};
-    el.Connect=(fn)=>el._fn=fn;
-    if(type==="TextButton"){
-      el.onclick=()=>el._fn&&el._fn();
-      el.style.padding="10px";
-      el.style.margin="10px";
-    }
-    return {
-      Parent:{
-        set v(p){ (p||game.CoreGui).appendChild(el); }
-      },
-      set Text(t){el.textContent=t},
-      MouseButton1Click:{Connect:(fn)=>el._fn=fn}
-    };
+    /* print */
+    L.setGlobal("print",(x)=>{
+      const c=document.getElementById("console");
+      c.textContent+=String(x)+"\n";
+      c.scrollTop=c.scrollHeight;
+    });
+
+    /* UI button */
+    L.setGlobal("createButton",(text)=>{
+      const b=document.createElement("button");
+      b.textContent=text;
+      b.onclick=()=>{
+        const c=document.getElementById("console");
+        c.textContent+="Button clicked\n";
+      };
+      document.getElementById("ui").appendChild(b);
+    });
+
+    /* loadstring(url) */
+    L.setGlobal("loadstring",(url)=>{
+      return ()=>{
+        fetch(url)
+          .then(r=>r.text())
+          .then(src=>{
+            runLuau(src);
+          })
+          .catch(e=>{
+            const c=document.getElementById("console");
+            c.textContent+="Load error: "+e+"\n";
+          });
+      };
+    });
+
+    luau.load(L,code);
+    luau.call(L,0,0);
+
+  }catch(e){
+    const c=document.getElementById("console");
+    c.textContent+="Error: "+e+"\n";
   }
-};
-
-window.loadstring=(src)=>()=>window.__runLuau(src);
-
-window.__runLuau=(code)=>{
-  const L=luau.createState();
-  L.setGlobal("print",(s)=>log(String(s)));
-  luau.load(L,code);
-  luau.call(L,0,0);
-};
+}
