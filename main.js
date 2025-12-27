@@ -2,7 +2,7 @@ let luau, editor;
 
 window.onload = () => {
   editor = CodeMirror(document.getElementById("editor"), {
-    value: `print("Executor preview full")
+    value: `print("Mobile executor preview")
 
 local f = Instance.new("Frame")
 f.Size = UDim2.new(0,260,0,160)
@@ -21,7 +21,9 @@ b.MouseButton1Click:Connect(function()
 end)
 `,
     mode: "lua",
-    lineNumbers: true
+    lineNumbers: false,
+    lineWrapping: true,
+    viewportMargin: Infinity
   });
 };
 
@@ -30,7 +32,7 @@ async function run(){
   clearConsole();
 
   if(!luau){
-    luau=new Luau();
+    luau = new Luau();
     injectGlobals(luau);
   }
 
@@ -39,4 +41,12 @@ async function run(){
   }catch(e){
     log("Error: "+e,"error");
   }
+}
+
+/* ===== MOBILE TAB CONTROL ===== */
+function showTab(id){
+  ["editor","ui","console"].forEach(t=>{
+    document.getElementById(t).classList.remove("tab-active");
+  });
+  document.getElementById(id).classList.add("tab-active");
 }
