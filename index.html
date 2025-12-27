@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Luau Executor Preview</title>
 
 <link rel="stylesheet"
@@ -10,16 +11,46 @@
 <style>
 body{
   margin:0;
-  display:flex;
-  height:100vh;
   background:#0f0f0f;
   color:white;
   font-family:monospace;
+  height:100vh;
 }
-#editor{width:420px;height:100vh;}
+
+/* ===== TABS MOBILE ===== */
+#tabs{
+  display:none;
+  background:#111;
+}
+#tabs button{
+  flex:1;
+  padding:12px;
+  font-size:16px;
+  background:#222;
+  color:white;
+  border:none;
+}
+
+/* ===== CONTAINER ===== */
+#container{
+  display:flex;
+  height:100vh;
+}
+
+/* ===== DESKTOP ===== */
+#editor{width:420px;}
 #right{flex:1;display:flex;flex-direction:column;}
 #toolbar{padding:6px;background:#1a1a1a;}
-#ui{flex:1;position:relative;background:#222;}
+#toolbar button{
+  width:100%;
+  padding:14px;
+  font-size:18px;
+}
+#ui{
+  flex:1;
+  position:relative;
+  background:#222;
+}
 #console{
   height:140px;
   background:#000;
@@ -27,29 +58,52 @@ body{
   padding:5px;
   font-size:13px;
 }
+
+/* ===== MOBILE ===== */
+@media (max-width:768px){
+  #container{flex-direction:column;}
+  #tabs{display:flex;}
+  #editor,#ui,#console{display:none;height:100%;}
+  .tab-active{display:block;}
+  #editor{width:100%;}
+}
 </style>
 </head>
+
 <body>
 
-<div id="editor"></div>
-
-<div id="right">
-  <div id="toolbar">
-    <button onclick="run()">Run</button>
-  </div>
-  <div id="ui"></div>
-  <div id="console"></div>
+<!-- MOBILE TABS -->
+<div id="tabs">
+  <button onclick="showTab('editor')">Editor</button>
+  <button onclick="showTab('ui')">UI</button>
+  <button onclick="showTab('console')">Console</button>
 </div>
 
+<div id="container">
+
+  <div id="editor" class="tab-active"></div>
+
+  <div id="right">
+    <div id="toolbar">
+      <button onclick="run()">▶ Run</button>
+    </div>
+    <div id="ui"></div>
+    <div id="console"></div>
+  </div>
+
+</div>
+
+<!-- LIBS -->
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/luau-web/dist/luau.web.js"></script>
 
+<!-- APP FILES -->
 <script src="console.js"></script>
 <script src="draggable.js"></script>
 <script src="bridge.js"></script>
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
+
 </body>
 </html>
