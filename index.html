@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Luau preview</title>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
@@ -34,7 +34,7 @@ button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:8px 1
 <div id="ui"></div>
 <div id="console"></div>
 
-<!-- Libs -->
+<!-- Load cục bộ Luau.Web.js -->
 <script src="Luau.Web.js"></script>
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
@@ -48,6 +48,8 @@ document.querySelectorAll("#tabs button").forEach(btn=>{
       document.getElementById(id).style.display="none";
     });
     document.getElementById(btn.dataset.tab).style.display="block";
+
+    if(btn.dataset.tab==="editor") editor.refresh();
   };
 });
 </script>
