@@ -2,47 +2,27 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luau Web Executor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luau preview</title>
 
-<!-- CodeMirror CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
 
 <style>
-body{
-  margin:0;height:100vh;
-  background:#0b0e14;color:#e9ebf1;
-  font-family:monospace;overflow:hidden
-}
-#top{
-  height:46px;background:#111726;
-  display:flex;align-items:center;
-  padding:0 12px;font-weight:bold
-}
+body{margin:0;height:100vh;background:#0b0e14;color:#e9ebf1;font-family:monospace;overflow:hidden}
+#top{height:46px;background:#111726;display:flex;align-items:center;padding:0 12px;font-weight:bold}
 #tabs{display:flex;background:#141823}
-#tabs button{
-  flex:1;padding:10px;background:none;border:none;color:#9aa0b3
-}
-#tabs button.active{
-  color:#fff;border-bottom:2px solid #5da9ff
-}
-#editor,#ui,#console{
-  display:none;height:calc(100vh - 92px)
-}
+#tabs button{flex:1;padding:10px;background:none;border:none;color:#9aa0b3}
+#tabs button.active{color:#fff;border-bottom:2px solid #5da9ff}
+#editor,#ui,#console{display:none;height:calc(100vh - 92px)}
 #editor{display:block}
-#console{
-  background:#000;padding:8px;white-space:pre-wrap;overflow:auto
-}
+#console{background:#000;padding:8px;white-space:pre-wrap;overflow:auto}
 #ui{padding:8px}
-button{
-  background:#1e2433;color:#fff;border:none;border-radius:4px;padding:8px 12px;margin:6px
-}
+button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:8px 12px;margin:6px}
 </style>
 </head>
 
 <body>
-
-<div id="top">Luau Web Executor • Realtime Safe</div>
+<div id="top">Luau Web Executor • Local Luau.Web.js</div>
 
 <div id="tabs">
   <button class="active" data-tab="editor">Editor</button>
@@ -55,16 +35,11 @@ button{
 <div id="console"></div>
 
 <!-- Libs -->
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/luau-web/dist/luau.web.js"></script>
-
-<!-- Executor scripts -->
+<script src="Luau.Web.js"></script>
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
 
 <script>
-/* Tabs logic */
 document.querySelectorAll("#tabs button").forEach(btn=>{
   btn.onclick=()=>{
     document.querySelectorAll("#tabs button").forEach(b=>b.classList.remove("active"));
@@ -76,6 +51,5 @@ document.querySelectorAll("#tabs button").forEach(btn=>{
   };
 });
 </script>
-
 </body>
 </html>
