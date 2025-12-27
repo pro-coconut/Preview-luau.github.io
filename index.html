@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Luau Executor</title>
+<title>Luau Web Executor</title>
 
+<!-- CodeMirror -->
 <link rel="stylesheet"
  href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
 
@@ -29,22 +30,18 @@ body{
   overflow:hidden;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 #header{
   height:44px;
   padding:0 14px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:linear-gradient(90deg,#111726,#1c2238);
+  background:#111726;
   font-weight:600;
 }
-#badge{
-  font-size:12px;
-  color:var(--muted);
-}
 
-/* ===== TOOLBAR ===== */
+/* TOOLBAR */
 #toolbar{
   display:flex;
   gap:8px;
@@ -69,7 +66,7 @@ body{
   color:var(--danger);
 }
 
-/* ===== TABS ===== */
+/* TABS */
 #tabs{
   display:flex;
   background:var(--panel);
@@ -86,14 +83,24 @@ body{
   border-bottom:2px solid var(--accent);
 }
 
-/* ===== LAYOUT ===== */
+/* LAYOUT */
 #container{
   display:flex;
   height:calc(100vh - 44px - 44px - 40px);
 }
-#editor{width:420px;background:var(--panel)}
-#right{flex:1;display:flex;flex-direction:column}
-#ui{flex:1;background:var(--panel2);position:relative}
+#editor{
+  width:420px;
+  background:var(--panel);
+}
+#right{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+#ui{
+  flex:1;
+  background:var(--panel2);
+}
 #console{
   height:160px;
   background:#000;
@@ -102,7 +109,7 @@ body{
   overflow:auto;
 }
 
-/* ===== MOBILE ===== */
+/* MOBILE */
 @media(max-width:768px){
   #container{flex-direction:column}
   #editor,#ui,#console{display:none;height:100%}
@@ -110,7 +117,7 @@ body{
   #editor{width:100%}
 }
 
-/* ===== CODEMIRROR ===== */
+/* CODEMIRROR */
 .CodeMirror{
   height:100%;
   background:transparent;
@@ -123,15 +130,15 @@ body{
 
 <!-- HEADER -->
 <div id="header">
-  <div>Luau Executor</div>
-  <div id="badge">Realtime • Safe</div>
+  <div>Luau Web Executor</div>
+  <div style="font-size:12px;color:var(--muted)">Realtime • Safe</div>
 </div>
 
 <!-- TOOLBAR -->
 <div id="toolbar">
   <button id="rt" class="toggle on">Realtime</button>
   <button id="safe" class="toggle on">Safe mode</button>
-  <button class="toggle danger" onclick="clearConsole()">Clear log</button>
+  <button class="toggle danger" onclick="clearConsole()">Clear</button>
 </div>
 
 <!-- TABS -->
@@ -155,16 +162,16 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/luau-web/dist/luau.web.js"></script>
 
-<!-- APP -->
+<!-- CORE FILES (GIỮ NGUYÊN) -->
 <script src="console.js"></script>
 <script src="draggable.js"></script>
 <script src="bridge.js"></script>
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
 
-<!-- UI LOGIC -->
+<!-- UI + EDITOR INIT -->
 <script>
-/* TAB */
+/* TABS */
 function tab(btn,id){
   document.querySelectorAll("#tabs button")
     .forEach(b=>b.classList.remove("active"));
@@ -184,11 +191,23 @@ document.getElementById("safe").onclick=function(){
   this.classList.toggle("on");
 };
 
-/* AUTO SAVE SCRIPT */
-window.addEventListener("beforeunload",()=>{
-  if(window.editor){
-    localStorage.setItem("luau_script",editor.getValue());
+/* INIT CODE EDITOR */
+const editor = CodeMirror(
+  document.getElementById("editor"),
+  {
+    value: localStorage.getItem("luau_script") ||
+`print("Luau Web Executor Ready")`,
+    mode: "lua",
+    lineNumbers: true,
+    indentUnit: 2,
+    tabSize: 2
   }
+);
+window.editor = editor;
+
+/* AUTO SAVE */
+window.addEventListener("beforeunload",()=>{
+  localStorage.setItem("luau_script", editor.getValue());
 });
 </script>
 
