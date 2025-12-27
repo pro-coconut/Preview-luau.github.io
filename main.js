@@ -1,5 +1,11 @@
+// main.js
 const editor = CodeMirror(document.getElementById("editor"), {
-  value: `print("Hello executor")`,
+  value:
+`print("Hello executor")
+createButton("CLICK ME")
+
+-- loadstring example:
+-- loadstring("https://raw.githubusercontent.com/user/repo/main/test.lua")()`,
   mode:"lua",
   lineNumbers:true
 });
@@ -12,11 +18,11 @@ function clearAll(){
   ui.innerHTML="";
 }
 
-/* Realtime auto run */
-let timer = null;
-editor.on("change", ()=>{
+/* Realtime safe */
+let timer=null;
+editor.on("change",()=>{
   clearTimeout(timer);
-  timer = setTimeout(()=>{
+  timer=setTimeout(()=>{
     clearAll();
     runLuau(editor.getValue());
   },300);
