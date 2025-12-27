@@ -3,8 +3,12 @@
 <head>
 <meta charset="utf-8">
 <title>Luau Executor Preview</title>
+
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
+
 <style>
-body {
+body{
   margin:0;
   display:flex;
   height:100vh;
@@ -12,32 +16,13 @@ body {
   color:white;
   font-family:monospace;
 }
-#editor {
-  width:420px;
+#editor{width:420px;height:100vh;}
+#right{flex:1;display:flex;flex-direction:column;}
+#toolbar{padding:6px;background:#1a1a1a;}
+#ui{flex:1;position:relative;background:#222;}
+#console{
+  height:140px;
   background:#000;
-  color:#0f0;
-  padding:10px;
-  border:none;
-  outline:none;
-}
-#right {
-  flex:1;
-  display:flex;
-  flex-direction:column;
-}
-#toolbar {
-  padding:5px;
-  background:#1a1a1a;
-}
-#ui {
-  flex:1;
-  position:relative;
-  background:#222;
-}
-#console {
-  height:120px;
-  background:#000;
-  color:#0f0;
   overflow:auto;
   padding:5px;
   font-size:13px;
@@ -46,25 +31,7 @@ body {
 </head>
 <body>
 
-<textarea id="editor">
-print("Executor preview")
-
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0,260,0,160)
-frame.Position = UDim2.new(0,-130,0,-80)
-frame.BackgroundColor3 = Color3.fromRGB(40,40,40)
-frame.Draggable = true
-
-local btn = Instance.new("TextButton")
-btn.Text = "Load menu"
-btn.Size = UDim2.new(0,140,0,40)
-btn.Position = UDim2.new(0,-70,0,-20)
-btn.Parent = frame
-
-btn.MouseButton1Click:Connect(function()
-    loadstring("examples/menu.lua")()
-end)
-</textarea>
+<div id="editor"></div>
 
 <div id="right">
   <div id="toolbar">
@@ -74,9 +41,15 @@ end)
   <div id="console"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/luau-web/dist/luau.web.js"></script>
+
 <script src="console.js"></script>
 <script src="draggable.js"></script>
 <script src="bridge.js"></script>
+<script src="roblox-mock.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
