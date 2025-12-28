@@ -21,10 +21,10 @@ window.addEventListener("DOMContentLoaded", ()=>{
     clearTimeout(timer);
     timer = setTimeout(()=>{
       clearAll();
-      runLua(editor.getValue());
+      runLua(String(editor.getValue())); // ✅ convert sang JS string
     },300);
   });
 
   // Run lần đầu khi load
-  runLua(editor.getValue());
+  runLua(String(editor.getValue()));
 });
