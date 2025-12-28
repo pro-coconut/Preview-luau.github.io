@@ -20,7 +20,7 @@ createButton("CLICK ME")
     ui.innerHTML="";
   }
 
-  /* Realtime auto-run safe */
+  // Realtime auto-run
   let timer = null;
   editor.on("change", ()=>{
     clearTimeout(timer);
@@ -29,4 +29,7 @@ createButton("CLICK ME")
       runLuau(editor.getValue());
     },300);
   });
+
+  // Run lần đầu khi load page
+  runLuau(editor.getValue());
 });
