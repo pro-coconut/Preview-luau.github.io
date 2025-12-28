@@ -3,18 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Luau Web Executor</title>
+<title>Lua Web Executor (Fengari)</title>
 
-<!-- CodeMirror CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
-
-<!-- CodeMirror JS -->
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5/mode/lua/lua.js"></script>
 
 <style>
-html,body{margin:0;padding:0;height:100%;background:#0b0e14;color:#e9ebf1;font-family:monospace;}
-body{display:flex;flex-direction:column;}
+html,body{margin:0;padding:0;height:100%;background:#0b0e14;color:#e9ebf1;font-family:monospace;display:flex;flex-direction:column;}
 #top{height:40px;background:#111726;display:flex;align-items:center;padding:0 12px;font-weight:bold;}
 #editor{flex:1;min-height:200px;}
 #ui{height:120px;padding:8px;overflow:auto;background:#141823;}
@@ -25,18 +21,17 @@ button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:6px 1
 #console::-webkit-scrollbar-track,#ui::-webkit-scrollbar-track{background:#111;}
 </style>
 </head>
-
 <body>
 
-<div id="top">Luau Web Executor • Mobile Friendly</div>
+<div id="top">Lua Web Executor (Fengari)</div>
 <div id="editor"></div>
 <div id="ui"></div>
 <div id="console"></div>
 
-<!-- Luau.Web.js cục bộ -->
-<script src="Luau.Web.js"></script>
-<script src="roblox-mock.js"></script>
-<script src="main.js"></script>
+<!-- Fengari Web -->
+<script src="https://unpkg.com/fengari-web/dist/fengari-web.js"></script>
+<script src="roblox-mock-fengari.js"></script>
+<script src="main-fengari.js"></script>
 
 </body>
 </html>
