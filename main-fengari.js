@@ -24,8 +24,8 @@ window.addEventListener("DOMContentLoaded", ()=>{
       btn.classList.add("active");
       document.querySelectorAll(".tab-content").forEach(tc=>tc.style.display='none');
       const current = document.getElementById("tab-"+btn.dataset.tab);
-      current.style.display='flex'; // dùng flex để editor fill
-      if(btn.dataset.tab==='editor') editor.refresh();
+      current.style.display='flex';
+      if(btn.dataset.tab==='editor') editor.refresh(); // refresh CodeMirror khi hiện
     });
   });
   // Show editor tab by default
@@ -38,10 +38,10 @@ window.addEventListener("DOMContentLoaded", ()=>{
     clearTimeout(timer);
     timer = setTimeout(()=>{
       clearAll();
-      runLua(String(editor.getValue())); // ✅ convert code sang string
+      runLua(toJSString(editor.getValue())); // convert JS string chuẩn
     },300);
   });
 
   // Run lần đầu khi load
-  runLua(String(editor.getValue())); // ✅ convert code sang string
+  runLua(toJSString(editor.getValue())); // convert JS string chuẩn
 });
