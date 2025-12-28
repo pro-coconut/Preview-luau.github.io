@@ -23,12 +23,13 @@ window.addEventListener("DOMContentLoaded", ()=>{
       tabButtons.forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
       document.querySelectorAll(".tab-content").forEach(tc=>tc.style.display='none');
-      document.getElementById("tab-"+btn.dataset.tab).style.display='block';
+      const current = document.getElementById("tab-"+btn.dataset.tab);
+      current.style.display='flex'; // dùng flex để editor fill
       if(btn.dataset.tab==='editor') editor.refresh(); // refresh editor khi hiện
     });
   });
   // Show editor tab by default
-  document.getElementById("tab-editor").style.display='block';
+  document.getElementById("tab-editor").style.display='flex';
   editor.refresh();
 
   // Realtime auto-run
