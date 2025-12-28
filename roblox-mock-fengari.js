@@ -3,6 +3,9 @@ function runLua(code){
   const L = fengari.lauxlib.luaL_newstate();
   fengari.lualib.luaL_openlibs(L);
 
+  const consoleEl = document.getElementById("tab-console");
+  const ui = document.getElementById("tab-ui");
+
   // Override print
   fengari.lua.lua_pushjsfunction(L, function(L){
     const n = fengari.lua.lua_gettop(L);
@@ -10,8 +13,8 @@ function runLua(code){
     for(let i=1;i<=n;i++){
       out.push(fengari.tojsstring(L, i));
     }
-    document.getElementById("console").textContent += out.join(" ") + "\n";
-    document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+    consoleEl.textContent += out.join(" ") + "\n";
+    consoleEl.scrollTop = consoleEl.scrollHeight;
     return 0;
   });
   fengari.lua.lua_setglobal(L, "print");
@@ -21,15 +24,16 @@ function runLua(code){
     const text = fengari.tojsstring(L,1);
     const btn = document.createElement("button");
     btn.textContent = text;
-    btn.onclick = ()=>{document.getElementById("console").textContent+="Button clicked\n";};
-    document.getElementById("ui").appendChild(btn);
+    btn.className = "executor-btn";
+    btn.onclick = ()=>{consoleEl.textContent+="Button clicked\n";};
+    ui.appendChild(btn);
     return 0;
   });
   fengari.lua.lua_setglobal(L, "createButton");
 
   try{
-    fengari.load(L, String(code))(); // ✅ convert sang JS string
+    fengari.load(L, String(code))(); // convert code sang string
   }catch(e){
-    document.getElementById("console").textContent += "Error: "+e+"\n";
+    consoleEl.textContent += "Error: "+e+"\n";
   }
 }
