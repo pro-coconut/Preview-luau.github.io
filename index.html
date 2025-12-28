@@ -18,8 +18,8 @@ html,body{margin:0;padding:0;height:100%;background:#0b0e14;color:#e9ebf1;font-f
 #tabs{display:flex;background:#1b1f2d;}
 #tabs button{flex:1;padding:10px;border:none;background:#1b1f2d;color:#fff;cursor:pointer;}
 #tabs button.active{background:#5da9ff;color:#000;}
-.tab-content{flex:1;display:none;overflow:auto;}
-#editor,.tab-content{height:100%;padding:8px;}
+.tab-content{flex:1;display:none;flex-direction:column;overflow:auto;height:100%;}
+#editor,.tab-content{padding:8px;}
 #ui{padding:8px;background:#141823;}
 #console{padding:8px;background:#000;color:#fff;white-space:pre-wrap;font-size:14px;}
 button.executor-btn{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:6px 12px;margin:4px;cursor:pointer;}
