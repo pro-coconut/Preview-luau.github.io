@@ -28,7 +28,7 @@ function runLua(code){
   fengari.lua.lua_setglobal(L, "createButton");
 
   try{
-    fengari.load(L, code)();
+    fengari.load(L, String(code))(); // ✅ convert sang JS string
   }catch(e){
     document.getElementById("console").textContent += "Error: "+e+"\n";
   }
