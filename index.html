@@ -8,28 +8,23 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
 
 <style>
-body{margin:0;height:100vh;background:#0b0e14;color:#e9ebf1;font-family:monospace;overflow:hidden}
-#top{height:46px;background:#111726;display:flex;align-items:center;padding:0 12px;font-weight:bold}
-#tabs{display:flex;background:#141823}
-#tabs button{flex:1;padding:10px;background:none;border:none;color:#9aa0b3}
-#tabs button.active{color:#fff;border-bottom:2px solid #5da9ff}
-#editor,#ui,#console{display:none;height:calc(100vh - 92px)}
-#editor{display:block}
-#console{background:#000;padding:8px;white-space:pre-wrap;overflow:auto}
-#ui{padding:8px}
-button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:8px 12px;margin:6px}
+html,body{margin:0;padding:0;height:100%;background:#0b0e14;color:#e9ebf1;font-family:monospace;}
+body{display:flex;flex-direction:column;}
+#top{height:40px;background:#111726;display:flex;align-items:center;padding:0 12px;font-weight:bold;}
+#editor{flex:1;min-height:200px;}
+#ui{height:120px;padding:8px;overflow:auto;background:#141823;}
+#console{height:120px;padding:8px;overflow:auto;background:#000;color:#fff;white-space:pre-wrap;font-size:14px;}
+button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:6px 12px;margin:4px;cursor:pointer;}
+/* Scrollbar đẹp hơn */
+#console::-webkit-scrollbar,#ui::-webkit-scrollbar{width:8px;}
+#console::-webkit-scrollbar-thumb,#ui::-webkit-scrollbar-thumb{background:#5da9ff;border-radius:4px;}
+#console::-webkit-scrollbar-track,#ui::-webkit-scrollbar-track{background:#111;}
 </style>
 </head>
 
 <body>
-<div id="top">Luau Web Executor • Local Luau.Web.js</div>
 
-<div id="tabs">
-  <button class="active" data-tab="editor">Editor</button>
-  <button data-tab="ui">UI</button>
-  <button data-tab="console">Console</button>
-</div>
-
+<div id="top">Luau Web Executor • Responsive</div>
 <div id="editor"></div>
 <div id="ui"></div>
 <div id="console"></div>
@@ -39,19 +34,5 @@ button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:8px 1
 <script src="roblox-mock.js"></script>
 <script src="main.js"></script>
 
-<script>
-document.querySelectorAll("#tabs button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("#tabs button").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    ["editor","ui","console"].forEach(id=>{
-      document.getElementById(id).style.display="none";
-    });
-    document.getElementById(btn.dataset.tab).style.display="block";
-
-    if(btn.dataset.tab==="editor" && window.editor) window.editor.refresh();
-  };
-});
-</script>
 </body>
 </html>
