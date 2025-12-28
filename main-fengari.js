@@ -1,12 +1,7 @@
-// main.js
+// main-fengari.js
 window.addEventListener("DOMContentLoaded", ()=>{
-  const editor = CodeMirror(document.getElementById("editor"), {
-    value:
-`print("Hello executor")
-createButton("CLICK ME")
-
--- loadstring example:
--- loadstring("https://raw.githubusercontent.com/user/repo/main/test.lua")()`,
+  const editor = CodeMirror(document.getElementById("editor"),{
+    value:`print("Hello Lua executor")\ncreateButton("CLICK ME")`,
     mode:"lua",
     lineNumbers:true
   });
@@ -26,10 +21,10 @@ createButton("CLICK ME")
     clearTimeout(timer);
     timer = setTimeout(()=>{
       clearAll();
-      runLuau(editor.getValue());
+      runLua(editor.getValue());
     },300);
   });
 
-  // Run lần đầu khi load page
-  runLuau(editor.getValue());
+  // Run lần đầu khi load
+  runLua(editor.getValue());
 });
