@@ -32,7 +32,7 @@ function runLua(code){
   fengari.lua.lua_setglobal(L, "createButton");
 
   try{
-    fengari.load(L, String(code))(); // convert code sang string
+    fengari.load(L, String(code))(); // ✅ convert code sang JS string
   }catch(e){
     consoleEl.textContent += "Error: "+e+"\n";
   }
