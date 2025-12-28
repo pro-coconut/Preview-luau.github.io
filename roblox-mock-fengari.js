@@ -1,4 +1,9 @@
 // roblox-mock-fengari.js
+function toJSString(str){
+  if(typeof str === "string") return str;
+  return str.toString(); // đảm bảo JS string
+}
+
 function runLua(code){
   const L = fengari.lauxlib.luaL_newstate();
   fengari.lualib.luaL_openlibs(L);
@@ -32,7 +37,7 @@ function runLua(code){
   fengari.lua.lua_setglobal(L, "createButton");
 
   try{
-    fengari.load(L, String(code))(); // ✅ convert code sang JS string
+    fengari.load(L, toJSString(code))(); // convert sang JS string chuẩn
   }catch(e){
     consoleEl.textContent += "Error: "+e+"\n";
   }
