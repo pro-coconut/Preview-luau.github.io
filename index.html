@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lua Web Executor</title>
+<title>Lua Web Executor (Fengari)</title>
 
 <!-- CodeMirror CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5/lib/codemirror.css">
@@ -15,21 +15,31 @@
 <style>
 html,body{margin:0;padding:0;height:100%;background:#0b0e14;color:#e9ebf1;font-family:monospace;display:flex;flex-direction:column;}
 #top{height:40px;background:#111726;display:flex;align-items:center;padding:0 12px;font-weight:bold;}
-#editor{flex:1;min-height:200px;}
-#ui{height:120px;padding:8px;overflow:auto;background:#141823;}
-#console{height:120px;padding:8px;overflow:auto;background:#000;color:#fff;white-space:pre-wrap;font-size:14px;}
-button{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:6px 12px;margin:4px;cursor:pointer;}
-#console::-webkit-scrollbar,#ui::-webkit-scrollbar{width:8px;}
-#console::-webkit-scrollbar-thumb,#ui::-webkit-scrollbar-thumb{background:#5da9ff;border-radius:4px;}
-#console::-webkit-scrollbar-track,#ui::-webkit-scrollbar-track{background:#111;}
+#tabs{display:flex;background:#1b1f2d;}
+#tabs button{flex:1;padding:10px;border:none;background:#1b1f2d;color:#fff;cursor:pointer;}
+#tabs button.active{background:#5da9ff;color:#000;}
+.tab-content{flex:1;display:none;overflow:auto;}
+#editor,.tab-content{height:100%;padding:8px;}
+#ui{padding:8px;background:#141823;}
+#console{padding:8px;background:#000;color:#fff;white-space:pre-wrap;font-size:14px;}
+button.executor-btn{background:#1e2433;color:#fff;border:none;border-radius:4px;padding:6px 12px;margin:4px;cursor:pointer;}
+#ui::-webkit-scrollbar,#console::-webkit-scrollbar{width:8px;}
+#ui::-webkit-scrollbar-thumb,#console::-webkit-scrollbar-thumb{background:#5da9ff;border-radius:4px;}
+#ui::-webkit-scrollbar-track,#console::-webkit-scrollbar-track{background:#111;}
 </style>
 </head>
 <body>
 
 <div id="top">Lua Web Executor (Fengari)</div>
-<div id="editor"></div>
-<div id="ui"></div>
-<div id="console"></div>
+<div id="tabs">
+  <button class="active" data-tab="editor">Editor</button>
+  <button data-tab="ui">UI</button>
+  <button data-tab="console">Console</button>
+</div>
+
+<div id="tab-editor" class="tab-content"></div>
+<div id="tab-ui" class="tab-content"></div>
+<div id="tab-console" class="tab-content"></div>
 
 <!-- Fengari Web -->
 <script src="https://unpkg.com/fengari-web/dist/fengari-web.js"></script>
